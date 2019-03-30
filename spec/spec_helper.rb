@@ -32,6 +32,18 @@ module OTP::JWT::FactoryHelpers
   end
 end
 
+module Rails4RequestMethods
+  [:get, :post, :put, :delete].each do |method_name|
+    define_method(method_name) do |path, named_args|
+      super(
+        path,
+        named_args.delete(:params),
+        named_args.delete(:headers)
+      )
+    end
+  end
+end
+
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
   config.mock_with :rspec
@@ -50,4 +62,9 @@ RSpec.configure do |config|
   config.include OTP::JWT::FactoryHelpers, type: :request
   config.include ActiveJob::TestHelper, type: :request
   config.include Dummy.routes.url_helpers, type: :request
+
+  if ::Rails::VERSION::MAJOR == 4
+    config.include Rails4RequestMethods, type: :request
+    config.include Rails4RequestMethods, type: :controller
+  end
 end

@@ -44,7 +44,7 @@ end
 
 GlobalID.app = Dummy
 
-class ApplicationController < ActionController::API
+class ApplicationController < ActionController::Base
   include OTP::JWT::ActionController
 
   private
