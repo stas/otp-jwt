@@ -1,4 +1,4 @@
-# OTP API ⎆
+# OTP JWT ⎆
 
 One time password (email, SMS) authentication support for HTTP APIs.
 

@@ -12,6 +12,9 @@ Rails:
 RSpec:
   Enabled: true
 
+RSpec/MultipleExpectations:
+  Enabled: false
+
 Performance:
   Enabled: true
 
@@ -30,6 +33,11 @@ Style/FrozenStringLiteralComment:
 
 Metrics/LineLength:
   Max: 80
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'
+    - '**/*.gemspec'
 
 Layout/IndentationConsistency:
   EnforcedStyle: normal
