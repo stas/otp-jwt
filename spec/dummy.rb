@@ -17,7 +17,7 @@ ActiveRecord::Schema.define do
     t.string :full_name
     t.string :phone_number
     t.string :otp_secret
-    t.integer :otp_counter, default: 0
+    t.integer :otp_counter
     t.timestamp :last_login_at
     t.timestamps
   end
@@ -71,6 +71,7 @@ end
 class TokensController < ApplicationController
   def create
     user = User.find_by(email: params[:email])
+
     jwt_from_otp(user, params[:otp]) do |auth_user|
       auth_user.update_column(:last_login_at, DateTime.current)
 

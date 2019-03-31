@@ -12,7 +12,7 @@ module OTP
     OTP_DIGITS = 4
 
     included do
-      after_initialize :set_otp_secret
+      after_initialize :setup_otp
     end
 
     # Generates the OTP
@@ -73,8 +73,9 @@ module OTP
     # Provides a default value for the OTP secret attribute
     #
     # @return [String]
-    def set_otp_secret
+    def setup_otp
       self.otp_secret ||= ROTP::Base32.random_base32
+      self.otp_counter ||= 0
     end
   end
 end
