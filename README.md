@@ -6,6 +6,7 @@ One time password (email, SMS) authentication support for HTTP APIs.
 > He blew it.
 >
 >— [WSJ.com](https://www.wsj.com/articles/the-man-who-wrote-those-password-rules-has-a-new-tip-n3v-r-m1-d-1502124118)
+
 This project provides a couple of mixins to help you build
 applications/HTTP APIs without asking your users to provide passwords.
 
@@ -54,6 +55,15 @@ Or install it yourself as:
     $ gem install otp-jwt
 
 ## Usage
+
+ * [OTP for Active Record models](#otp-for-active-record-models)
+   * [Mailer support](#mailer-support)
+   * [SMS delivery support](#sms-delivery-support)
+ * [JWT for Active Record models](#jwt-for-active-record-models)
+ * [JWT authorization](#jwt-authorization)
+ * [JWT authentication](#jwt-authentication)
+
+---
 
 To start using it with Rails, add this to an initializer and configure your
 keys:
@@ -244,7 +254,7 @@ push git commits and tags, and push the `.gem` file to
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at
-https://github.com/stas/otp-api
+https://github.com/stas/otp-jwt
 
 This project is intended to be a safe, welcoming space for collaboration, and
 contributors are expected to adhere to the
