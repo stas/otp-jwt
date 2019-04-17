@@ -7,15 +7,6 @@ module OTP
     module Token
       include ActiveSupport::Configurable
 
-      # Resolves possible JWT exception classes
-      #
-      # Can be removed once #255 is merged.
-      # See: https://github.com/jwt/ruby-jwt/pull/255
-      JWT_EXCEPTIONS = ::JWT.constants.map do |cname|
-        klass = ::JWT.const_get(cname)
-        klass if klass.is_a?(Class) && klass <= StandardError
-      end.compact
-
       # The signature key used to sign the tokens.
       config_accessor :jwt_signature_key, instance_accessor: false
       # The signature key algorithm, defaults to HS256.
@@ -64,7 +55,7 @@ module OTP
         else
           verified
         end
-      rescue *JWT_EXCEPTIONS
+      rescue ::JWT::EncodeError, ::JWT::DecodeError
       end
     end
   end

@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'activesupport'
-  spec.add_dependency 'jwt', '~> 2.1'
+  spec.add_dependency 'jwt', '~> 2.2.0.pre.beta.0'
   spec.add_dependency 'rotp', '~> 4.1'
 
   spec.add_development_dependency 'bundler'

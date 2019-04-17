@@ -3,7 +3,7 @@ PATH
   specs:
     otp-jwt (0.1.0)
       activesupport
-      jwt (~> 2.1)
+      jwt (~> 2.2.0.pre.beta.0)
       rotp (~> 4.1)
 
 GEM
@@ -67,7 +67,7 @@ GEM
       concurrent-ruby (~> 1.0)
     jaro_winkler (1.5.2)
     json (2.2.0)
-    jwt (2.1.0)
+    jwt (2.2.0.pre.beta.0)
     loofah (2.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -184,7 +184,7 @@ DEPENDENCIES
   bundler
   ffaker
   otp-jwt!
-  rails (~> 5)
+  rails
   rspec-rails
   rubocop-performance
   rubocop-rails_config
