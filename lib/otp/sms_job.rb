@@ -7,7 +7,7 @@ end
 
 module OTP
   # Uses the AWS SNS API to send the OTP SMS message.
-  class SMSOTPJob < ActiveJob::Base
+  class SMSJob < ActiveJob::Base
     # A generic template for the message body.
     TEMPLATE = '%{otp} is your magic password 🗝️'
     # Indicates if the messaging is disabled. Handy for testing purposes.
