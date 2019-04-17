@@ -29,9 +29,12 @@ module OTP
       # @param claims [Hash], extra claims to be encoded into the token.
       #
       # @return [String], a JWT token
-      def self.sign(payload, claims = {})
-        payload = payload.merge(claims)
-        claims[:exp] ||= self.jwt_lifetime if self.jwt_lifetime.present?
+      def self.sign(payload)
+        payload = payload.dup.as_json
+
+        if payload['exp'].blank? && self.jwt_lifetime.to_i > 0
+          payload['exp'] = Time.now.to_i + self.jwt_lifetime
+        end
 
         ::JWT.encode(payload, self.jwt_signature_key, self.jwt_algorithm)
       end
@@ -39,15 +42,11 @@ module OTP
       # Verifies and returns decoded token data upon success
       #
       # @param token [String], token to be decoded.
-      # @param options [Hash], extra options to be used during verification.
+      # @param opts [Hash], extra options to be used during verification.
       #
       # @return [Hash], JWT token payload
-      def self.verify(token, options = {})
-        lifetime = self.jwt_lifetime
-        opts = {}.merge(options)
-        opts[:verify_expiration] ||= lifetime if lifetime.present?
-
-        ::JWT.decode(token.to_s, self.jwt_signature_key, true, opts)
+      def self.verify(token, opts = nil)
+        ::JWT.decode(token.to_s, self.jwt_signature_key, true, opts || {})
       end
 
       # Decodes a valid token into [Hash]
@@ -55,10 +54,10 @@ module OTP
       # Requires a block, yields JWT data. Will catch any JWT exception.
       #
       # @param token [String], token to be decoded.
-      # @param options [Hash], extra options to be used during verification.
+      # @param opts [Hash], extra options to be used during verification.
       # @return [Hash] upon success
-      def self.decode(token, options = nil)
-        verified, _ = self.verify(token, options || {})
+      def self.decode(token, opts = nil)
+        verified, _ = self.verify(token, opts)
 
         if block_given?
           yield verified
