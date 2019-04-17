@@ -39,7 +39,7 @@ RSpec.describe OTP::JWT::Token, type: :model do
       let(:token) { FFaker::Internet.password }
 
       it do
-        expect(described_class.decode(token) { |p| nil }).to eq(nil)
+        expect(described_class.decode(token)).to eq(nil)
       end
     end
   end

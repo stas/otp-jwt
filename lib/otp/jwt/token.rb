@@ -58,10 +58,13 @@ module OTP
       # @param options [Hash], extra options to be used during verification.
       # @return [Hash] upon success
       def self.decode(token, options = nil)
-        return unless block_given?
         verified, _ = self.verify(token, options || {})
 
-        yield verified
+        if block_given?
+          yield verified
+        else
+          verified
+        end
       rescue *JWT_EXCEPTIONS
       end
     end
