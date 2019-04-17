@@ -27,7 +27,7 @@ The available features include:
  * Flexible models support for
    [counter based OTP](https://github.com/mdp/rotp#counter-based-otps)
  * Flexible JWT token generation helpers for models and arbitrary data
- * Pluggable authentication based on the OTP and JWT
+ * Pluggable authentication flow using the OTP and JWT
  * Pluggable OTP mailer
  * Pluggable OTP SMS background processing job
 
@@ -62,6 +62,7 @@ Or install it yourself as:
  * [JWT for Active Record models](#jwt-for-active-record-models)
  * [JWT authorization](#jwt-authorization)
  * [JWT authentication](#jwt-authentication)
+ * [JWT Tokens](#jwt-tokens)
 
 ---
 
@@ -119,6 +120,17 @@ class User < ActiveRecord::Base
 end
 ```
 
+To customize the mailer subject, address and template, update the defaults:
+
+```ruby
+require 'otp/mailer'
+
+OTP::Mailer.default subject: 'Your App magic password 🗝️'
+OTP::Mailer.default from: ENV['DEFAUL_MAILER_FROM']
+# Tell mailer to use the template from app/views/otp/mailer/otp.html.erb
+OTP::Mailer.prepend_view_path(Rails.root.join('app', 'views'))
+```
+
 #### SMS delivery support
 
 You can use the built-in job to deliver the OTP via SMS, just require it and
@@ -130,8 +142,14 @@ require 'otp/sms_otp_job'
 class User < ActiveRecord::Base
   include OTP::ActiveRecord
 
+  SMS_TEMPLATE = '%{otp} is your APP magic password 🗝️'
+
   def sms_otp
-    OTP::SMSOTPJob.perform_later(phone_number, otp) if phone_number.present?
+    OTP::SMSOTPJob.perform_later(
+      phone_number,
+      otp,
+      SMS_TEMPLATE # <-- Optional text message template.
+    ) if phone_number.present?
   end
 end
 ```
@@ -237,6 +255,22 @@ The `jwt_from_otp` does a couple of things here:
 The OTP delivery is handled by the `User#deliver_otp` method
 and can be customized. By default it will call the `sms_otp` method and
 if nothing is returned, it will proceed with the `email_otp` method.
+
+### JWT Tokens
+
+To help sign any sort of data, a lightweight JWT Token wrapper is provided.
+
+Signing a payload will follow the pre-defined settings like the lifetime and
+the encryption key. Decoding a token will validate any claims as well. Finally
+there's a safe wrapper to help you with the JWT specific exceptions handling.
+
+```ruby
+require 'otp/jwt/token'
+
+token = OTP::JWT::Token.sign(sub: 'my subject')
+OTP::JWT::Token.decode(token) == {'sub' => 'my subject'}
+OTP::JWT::Token.decode('bad token') == nil
+```
 
 ## Development
 
