@@ -19,7 +19,7 @@ module OTP
     #
     # @return [String] or nil if no OTP is set
     def otp
-      return nil unless valid? && persisted?
+      return nil if !valid? || !persisted? || otp_secret.blank?
       otp_digits = self.class.const_get(:OTP_DIGITS)
       hotp = ROTP::HOTP.new(otp_secret, digits: otp_digits)
 

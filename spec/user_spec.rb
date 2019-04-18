@@ -19,6 +19,13 @@ RSpec.describe User, type: :model do
     it do
       expect { user.otp }.to change(user, :otp_counter).by(1)
     end
+
+    context 'without a secret' do
+      it do
+        user.update_column(:otp_secret, nil)
+        expect(user.otp).to be_nil
+      end
+    end
   end
 
   describe '#verify_otp' do
