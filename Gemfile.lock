@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    otp-jwt (0.2.2)
+    otp-jwt (0.2.3)
       activesupport
       jwt (~> 2.2.0.pre.beta.0)
       rotp (~> 4.1)
