@@ -33,12 +33,12 @@ RSpec.describe User, type: :model do
       expect(user.verify_otp(user.otp)).to be_truthy
       expect { user.verify_otp(user.otp) }.to change(user, :otp_counter).by(2)
     end
-  end
 
-  describe '#verify_otp' do
-    it 'increments the otp counter after verification' do
-      expect(user.verify_otp(user.otp)).to be_truthy
-      expect { user.verify_otp(user.otp) }.to change(user, :otp_counter).by(2)
+    context 'without a secret' do
+      it do
+        user.update_column(:otp_secret, nil)
+        expect(user.verify_otp(rand(1000..2000).to_s)).to be_nil
+      end
     end
   end
 end

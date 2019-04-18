@@ -20,6 +20,7 @@ module OTP
     # @return [String] or nil if no OTP is set
     def otp
       return nil if !valid? || !persisted? || otp_secret.blank?
+
       otp_digits = self.class.const_get(:OTP_DIGITS)
       hotp = ROTP::HOTP.new(otp_secret, digits: otp_digits)
 
@@ -33,6 +34,8 @@ module OTP
     #
     # @return true on success, false on failure
     def verify_otp(otp)
+      return nil if !valid? || !persisted? || otp_secret.blank?
+
       hotp = ROTP::HOTP.new(otp_secret, digits: OTP_DIGITS)
       transaction do
         otp_status = hotp.verify(otp.to_s, otp_counter)
