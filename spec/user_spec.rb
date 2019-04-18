@@ -13,6 +13,17 @@ RSpec.describe User, type: :model do
     it do
       expect(User.from_jwt(token)).to eq(user)
     end
+
+    context 'with a custom claim name' do
+      let(:claim_value) { FFaker::Internet.password }
+      let(:token) { user.to_jwt(my_claim_name: claim_value) }
+
+      it do
+        expect(OTP::JWT::Token.decode(token)['my_claim_name'])
+          .to eq(claim_value)
+        expect(User.from_jwt(token, 'my_claim_name')).to be_nil
+      end
+    end
   end
 
   describe '#otp' do
