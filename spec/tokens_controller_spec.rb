@@ -11,7 +11,7 @@ RSpec.describe TokensController, type: :request do
   before do
     ActionMailer::Base.deliveries.clear
     ActiveJob::Base.queue_adapter.performed_jobs.clear
-    post(tokens_path, params: params)
+    post(tokens_path, params: params.to_json, headers: json_headers)
   end
 
   it { expect(response).to have_http_status(:forbidden) }
