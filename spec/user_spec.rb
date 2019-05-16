@@ -14,6 +14,14 @@ RSpec.describe User, type: :model do
       expect(User.from_jwt(token)).to eq(user)
     end
 
+    context 'with a cast-able subject value' do
+      let(:token) { OTP::JWT::Token.sign(sub: user.id.to_s + '_text') }
+
+      it do
+        expect(User.from_jwt(token)).to be_nil
+      end
+    end
+
     context 'with a custom claim name' do
       let(:claim_value) { FFaker::Internet.password }
       let(:token) { user.to_jwt(my_claim_name: claim_value) }

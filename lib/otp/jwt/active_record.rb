@@ -14,7 +14,16 @@ module OTP
         # @return [ActiveRecord::Base] model
         def from_jwt(token, claim_name = 'sub')
           OTP::JWT::Token.decode(token) do |payload|
-            self.find_by(id: payload[claim_name])
+            val = payload[claim_name]
+            pk_col = self.column_for_attribute(self.primary_key)
+
+            # Arel casts the values to the primary key type, which means
+            # that an UUID will become an integer...
+            casted_val = self.connection.type_cast(val, pk_col)
+
+            return if casted_val.to_s != val.to_s.strip
+
+            self.find_by(self.primary_key => val)
           end
         end
       end
@@ -24,8 +33,10 @@ module OTP
       # @param claims [Hash] extra claims to be included
       # @return [ActiveRecord::Base] model
       def to_jwt(claims = nil)
-        claims ||= {}
-        OTP::JWT::Token.sign(sub: self.id, **claims)
+        OTP::JWT::Token.sign(
+          sub: self.send(self.class.primary_key),
+          **(claims || {})
+        )
       end
     end
   end
