@@ -31,6 +31,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop-rails_config'
   spec.add_development_dependency 'rubocop-rspec'
   spec.add_development_dependency 'simplecov'
-  spec.add_development_dependency 'sqlite3', '~> 1.3.6'
+  spec.add_development_dependency 'sqlite3', ENV['SQLITE3_VERSION']
   spec.add_development_dependency 'yardstick'
 end
