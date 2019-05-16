@@ -3,10 +3,23 @@ require 'action_controller/railtie'
 require 'global_id/railtie'
 require 'otp/mailer'
 
-Rails.logger = Logger.new(STDOUT)
-Rails.logger.level = ENV['LOG_LEVEL'] || Logger::WARN
+class Dummy < Rails::Application
+  secrets.secret_key_base = '_'
 
-ActiveRecord::Base.logger = Rails.logger
+  config.hosts << 'www.example.com' if config.respond_to?(:hosts)
+
+  config.logger = Logger.new(STDOUT)
+  config.logger.level = ENV['LOG_LEVEL'] || Logger::WARN
+
+  routes.draw do
+    resources :users, only: [:index]
+    resources :tokens, only: [:create]
+  end
+end
+
+GlobalID.app = Dummy
+Rails.logger = Dummy.config.logger
+ActiveRecord::Base.logger = Dummy.config.logger
 ActiveRecord::Base.establish_connection(
   ENV['DATABASE_URL'] || 'sqlite3::memory:'
 )
@@ -32,17 +45,6 @@ class User < ActiveRecord::Base
     OTP::Mailer.otp(email, otp, self).deliver_later
   end
 end
-
-class Dummy < Rails::Application
-  secrets.secret_key_base = '_'
-
-  routes.draw do
-    resources :users, only: [:index]
-    resources :tokens, only: [:create]
-  end
-end
-
-GlobalID.app = Dummy
 
 class ApplicationController < ActionController::Base
   include OTP::JWT::ActionController
