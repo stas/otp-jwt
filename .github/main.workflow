@@ -15,7 +15,7 @@ action "rspec-ruby2.6_rails4" {
   }
   args = [
     "sh", "-c",
-    "apk add -U git build-base sqlite-dev && rm Gemfile.lock && bundle install && rake"
+    "apk add -U git build-base sqlite-dev && bundle install && rake"
   ]
 }
 
@@ -27,7 +27,7 @@ action "rspec-ruby2.6_rails5" {
   }
   args = [
     "sh", "-c",
-    "apk add -U git build-base sqlite-dev && rm Gemfile.lock && bundle install && rake"
+    "apk add -U git build-base sqlite-dev && bundle install && rake"
   ]
 }
 
@@ -39,6 +39,6 @@ action "rspec-ruby2.6_rails6" {
   }
   args = [
     "sh", "-c",
-    "apk add -U git build-base sqlite-dev && rm Gemfile.lock && bundle install && rake"
+    "apk add -U git build-base sqlite-dev && bundle install && rake"
   ]
 }
