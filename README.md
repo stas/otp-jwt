@@ -103,6 +103,12 @@ A migration to add these two looks like this:
 $ rails g migration add_otp_to_users otp_secret:string otp_counter:integer
 ```
 
+Generate `opt_secret` by running the following in rails console if you have preexisting user data:
+```
+User.all.each do |u|
+  u.save()
+end
+```
 #### Mailer support
 
 You can use the built-in mailer to deliver the OTP, just require it and
