@@ -50,7 +50,6 @@ class ApplicationController < ActionController::Base
   include OTP::JWT::ActionController
 
   private
-
   def current_user
     @jwt_user ||= User.from_jwt(request_authorization_header)
   end

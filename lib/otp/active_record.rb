@@ -72,7 +72,6 @@ module OTP
     end
 
     private
-
     # Provides a default value for the OTP secret attribute
     #
     # @return [String]

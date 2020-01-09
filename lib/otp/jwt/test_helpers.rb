@@ -15,7 +15,7 @@ module OTP
       #
       # @return [Hash] the authorization headers
       def jwt_auth_header(entity_or_subject)
-        return json_headers unless entity_or_subject.present?
+        return json_headers if entity_or_subject.blank?
 
         token = entity_or_subject.try(:to_jwt)
         token ||= OTP::JWT::Token.sign(sub: entity_or_subject)
