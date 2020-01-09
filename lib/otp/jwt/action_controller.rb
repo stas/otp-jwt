@@ -3,7 +3,6 @@ module OTP
     # [ActionController] concern.
     module ActionController
       private
-
       # Authenticates a model and responds with a [JWT] token
       #
       # @return [String] with authentication token and country shop ID.

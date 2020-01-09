@@ -44,3 +44,20 @@ Layout/IndentationConsistency:
 
 Style/BlockDelimiters:
   Enabled: true
+
+Rails/ApplicationJob:
+  Enabled: false
+
+Rails/ApplicationMailer:
+  Enabled: false
+
+Rails/ApplicationRecord:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'lib/otp/active_record.rb'
+
+RSpec/DescribedClass:
+  Enabled: false
