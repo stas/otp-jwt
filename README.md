@@ -10,6 +10,8 @@ One time password (email, SMS) authentication support for HTTP APIs.
 This project provides a couple of mixins to help you build
 applications/HTTP APIs without asking your users to provide passwords.
 
+[Your browser probably can work seamlessly with OTPs](https://web.dev/web-otp/)!!! :heart_eyes: 
+
 ## About
 
 The goal of this project is to provide support for one time passwords
