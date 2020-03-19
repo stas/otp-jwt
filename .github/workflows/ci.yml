@@ -26,8 +26,9 @@ jobs:
       env:
         RAILS_VERSION: ~> ${{ matrix.rails }}
       run: |
-        rm -rf Gemfile.lock
+        sudo apt-get update
         sudo apt-get install libsqlite3-dev
+        gem uninstall bundler -a --force
         gem install bundler -v '~> 1'
         echo $RAILS_VERSION | grep -q '4' && export SQLITE3_VERSION='~> 1.3.6'
         bundle
