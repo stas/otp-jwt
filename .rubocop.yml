@@ -6,6 +6,9 @@ require:
   - rubocop-performance
   - rubocop-rspec
 
+AllCops:
+  NewCops: enable
+
 Rails:
   Enabled: true
 
@@ -31,7 +34,7 @@ Style/StringLiterals:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 80
 
 Metrics/BlockLength:

@@ -8,7 +8,7 @@ class Dummy < Rails::Application
 
   config.hosts << 'www.example.com' if config.respond_to?(:hosts)
 
-  config.logger = Logger.new(STDOUT)
+  config.logger = Logger.new($stdout)
   config.logger.level = ENV['LOG_LEVEL'] || Logger::WARN
 
   routes.draw do
