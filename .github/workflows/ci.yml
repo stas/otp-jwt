@@ -1,35 +1,41 @@
 name: CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   ruby_rails_test_matrix:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        ruby: [2.4, 2.6]
+        ruby: [2.4, 2.7, 3.0]
         rails: [4, 5, 6]
         exclude:
           - ruby: 2.4
             rails: 6
+          - ruby: 2.7
+            rails: 4
+          - ruby: 3
+            rails: 4
+          - ruby: 3
+            rails: 5
 
     steps:
     - uses: actions/checkout@master
 
-    - name: Sets up the environment
-      uses: actions/setup-ruby@v1
+    - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
+        bundler: none
 
-    - name: Runs code QA and tests
-      env:
-        RAILS_VERSION: ~> ${{ matrix.rails }}
-      run: |
+    - run: |
         sudo apt-get update
         sudo apt-get install libsqlite3-dev
-        gem uninstall bundler -a --force
-        gem install bundler -v '~> 1'
         echo $RAILS_VERSION | grep -q '4' && export SQLITE3_VERSION='~> 1.3.6'
-        bundle
-        rake
+        echo $RAILS_VERSION | grep -q '4' && export BUNDLER_VERSION=1
+        echo $RAILS_VERSION | grep -q '4' && export RUBOCOP_VERSION='0.81'
+        gem install bundler -v "~> $BUNDLER_VERSION"
+        rm -rf Gemfile.lock && bundle && rake
+      env:
+        RAILS_VERSION: ~> ${{ matrix.rails }}
+        BUNDLER_VERSION: 2

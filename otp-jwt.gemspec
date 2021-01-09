@@ -27,6 +27,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'ffaker'
   spec.add_development_dependency 'rails'
   spec.add_development_dependency 'rspec-rails'
+  spec.add_development_dependency 'rubocop', ENV['RUBOCOP_VERSION']
   spec.add_development_dependency 'rubocop-performance'
   spec.add_development_dependency 'rubocop-rails_config'
   spec.add_development_dependency 'rubocop-rspec'
