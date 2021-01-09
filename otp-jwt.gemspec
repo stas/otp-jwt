@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Passwordless HTTP APIs'
   spec.description   = 'OTP (email, SMS) JWT authentication for HTTP APIs.'
   spec.homepage      = 'https://github.com/stas/otp-jwt'
-  spec.license       = 'TBD'
+  spec.license       = 'MIT'
 
   spec.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(spec)/}) }
