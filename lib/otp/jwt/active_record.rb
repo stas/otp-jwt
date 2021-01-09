@@ -17,9 +17,13 @@ module OTP
             val = payload[claim_name]
             pk_col = self.column_for_attribute(self.primary_key)
 
-            # Arel casts the values to the primary key type, which means
-            # that an UUID will become an integer...
-            casted_val = self.connection.type_cast(val, pk_col)
+            # Arel casts the values to the primary key type,
+            # which means that an UUID becomes an integer by default...
+            if self.connection.respond_to?(:type_cast_from_column)
+              casted_val = self.connection.type_cast_from_column(pk_col, val)
+            else
+              casted_val = self.connection.type_cast(val, pk_col)
+            end
 
             return if casted_val.to_s != val.to_s.strip
 
