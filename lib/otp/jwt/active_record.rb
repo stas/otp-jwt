@@ -19,8 +19,9 @@ module OTP
 
             # Arel casts the values to the primary key type,
             # which means that an UUID becomes an integer by default...
-            if self.connection.respond_to?(:type_cast_from_column)
-              casted_val = self.connection.type_cast_from_column(pk_col, val)
+            if self.connection.respond_to?(:lookup_cast_type_from_column)
+              pk_type = self.connection.lookup_cast_type_from_column(pk_col)
+              casted_val = pk_type.serialize(val)
             else
               casted_val = self.connection.type_cast(val, pk_col)
             end
