@@ -36,7 +36,8 @@ module OTP
     def verify_otp(otp)
       return nil if !valid? || !persisted? || otp_secret.blank?
 
-      hotp = ROTP::HOTP.new(otp_secret, digits: OTP_DIGITS)
+      otp_digits = self.class.const_get(:OTP_DIGITS)
+      hotp = ROTP::HOTP.new(otp_secret, digits: otp_digits)
       transaction do
         otp_status = hotp.verify(otp.to_s, otp_counter)
         increment!(:otp_counter)
