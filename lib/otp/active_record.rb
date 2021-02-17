@@ -40,7 +40,7 @@ module OTP
       hotp = ROTP::HOTP.new(otp_secret, digits: otp_digits)
       transaction do
         otp_status = hotp.verify(otp.to_s, otp_counter)
-        increment!(:otp_counter)
+        increment!(:otp_counter) if otp_status
         otp_status
       end
     end
