@@ -12,6 +12,18 @@ RSpec.describe OTP::JWT::Token, type: :model do
 
   describe '#sign' do
     it { expect(described_class.sign(payload)).to eq(token) }
+
+    context 'with the none algorithm' do
+      before do
+        OTP::JWT::Token.jwt_algorithm = 'none'
+      end
+
+      after do
+        OTP::JWT::Token.jwt_algorithm = 'HS256'
+      end
+
+      it { expect(described_class.sign(payload)).to eq(token) }
+    end
   end
 
   describe '#verify' do
@@ -48,6 +60,22 @@ RSpec.describe OTP::JWT::Token, type: :model do
 
       it do
         expect(described_class.decode(token)).to eq(nil)
+      end
+    end
+
+    context 'with the none algorithm' do
+      before do
+        OTP::JWT::Token.jwt_algorithm = 'none'
+      end
+
+      after do
+        OTP::JWT::Token.jwt_algorithm = 'HS256'
+      end
+
+      it do
+        expect(
+          described_class.decode(token) { |p| User.find(p['sub']) }
+        ).to eq(user)
       end
     end
   end

@@ -10,7 +10,7 @@ One time password (email, SMS) authentication support for HTTP APIs.
 This project provides a couple of mixins to help you build
 applications/HTTP APIs without asking your users to provide passwords.
 
-[Your browser probably can work seamlessly with OTPs](https://web.dev/web-otp/)!!! :heart_eyes: 
+[Your browser probably can work seamlessly with OTPs](https://web.dev/web-otp/)!!! :heart_eyes:
 
 ## About
 
@@ -76,6 +76,12 @@ keys:
 require 'otp'
 # To load the JWT related support.
 require 'otp/jwt'
+
+# Set to 'none' to disable verification at all.
+# OTP::JWT::Token.jwt_algorithm = 'HS256'
+
+# How long the token will be valid.
+# OTP::JWT::Token.jwt_lifetime = 60 * 60 * 24
 
 OTP::JWT::Token.jwt_signature_key = ENV['YOUR-SIGN-KEY']
 ```

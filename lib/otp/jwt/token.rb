@@ -37,7 +37,9 @@ module OTP
       #
       # @return [Hash], JWT token payload
       def self.verify(token, opts = nil)
-        ::JWT.decode(token.to_s, self.jwt_signature_key, true, opts || {})
+        verify = self.jwt_algorithm != 'none'
+
+        ::JWT.decode(token.to_s, self.jwt_signature_key, verify, opts || {})
       end
 
       # Decodes a valid token into [Hash]
