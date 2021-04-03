@@ -37,7 +37,16 @@ module OTP
       #
       # @return [Hash], JWT token payload
       def self.verify(token, opts = nil)
-        ::JWT.decode(token.to_s, self.jwt_signature_key, true, opts || {})
+        # When using the 'none' algorithm the JWT library requires
+        # password to be nil and verification to be disabled
+        # https://github.com/jwt/ruby-jwt/blame/master/README.md#L60-L61
+        verify = true
+        password = self.jwt_signature_key
+        if self.jwt_algorithm == 'none'
+          verify = false
+          password = nil
+        end
+        ::JWT.decode(token.to_s, password, verify, opts || {})
       end
 
       # Decodes a valid token into [Hash]
