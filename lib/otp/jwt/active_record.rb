@@ -51,12 +51,10 @@ module OTP
       # the JWT flags/payload.
       #
       # @return nil if the expiration worked, otherwise returns the model
-      # rubocop:disable Rails/SkipsModelValidations
       def expire_jwt?
         return self unless self.respond_to?(:expire_jwt_at)
         return self unless expire_jwt_at? && expire_jwt_at.past?
       end
-      # rubocop:enable Rails/SkipsModelValidations
     end
   end
 end
