@@ -40,6 +40,16 @@ and [JWT](https://github.com/jwt/ruby-jwt/).
 
 Thanks to everyone who worked on these amazing projects!
 
+
+## Sponsors
+
+I'm grateful for the following companies for supporting this project!
+
+<p align="center">
+<a href="https://www.luneteyewear.com"><img src="https://user-images.githubusercontent.com/112147/136836142-2bfba96e-447f-4eb6-b137-2445aee81b37.png"/></a>
+<a href="https://www.startuplandia.io"><img src="https://user-images.githubusercontent.com/112147/136836147-93f8ab17-2465-4477-a7ab-e38255483c66.png"/></a>
+</p>
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -318,4 +328,5 @@ contributors are expected to adhere to the
 
 ## License
 
-TBD
+The gem is available as open source under the terms of the
+[MIT License](https://opensource.org/licenses/MIT).
