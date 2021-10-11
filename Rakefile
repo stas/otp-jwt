@@ -26,5 +26,5 @@ end
 desc('Run CI QA tasks')
 task(qa: ['qa:docs', 'qa:code'])
 
-RSpec::Core::RakeTask.new(spec: :qa)
-task(default: :spec)
+RSpec::Core::RakeTask.new(:spec)
+task(default: [:qa, :spec])
