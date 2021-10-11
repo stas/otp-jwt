@@ -28,7 +28,7 @@ RSpec.describe UsersController, type: :request do
 
       it do
         expect(response).to have_http_status(:unauthorized)
-        expect(user.reload.expire_jwt_at).to be_nil
+        expect(user.reload.expire_jwt_at).not_to be_nil
       end
     end
   end

@@ -55,9 +55,6 @@ module OTP
       def expire_jwt?
         return self unless self.respond_to?(:expire_jwt_at)
         return self unless expire_jwt_at? && expire_jwt_at.past?
-
-        update_columns(expire_jwt_at: nil)
-        nil
       end
       # rubocop:enable Rails/SkipsModelValidations
     end
