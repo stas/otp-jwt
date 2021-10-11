@@ -43,6 +43,22 @@ RSpec.describe OTP::JWT::Token, type: :model do
       expect { described_class.verify(token) }
         .to raise_error(JWT::ExpiredSignature)
     end
+
+    context 'with an RSA key' do
+      before do
+        OTP::JWT::Token.jwt_signature_key = OpenSSL::PKey::RSA.new(2048)
+        OTP::JWT::Token.jwt_algorithm = 'RS256'
+      end
+
+      after do
+        OTP::JWT::Token.jwt_signature_key = '_'
+        OTP::JWT::Token.jwt_algorithm = 'HS256'
+      end
+
+      it do
+        expect(described_class.verify(token).first).to include(payload)
+      end
+    end
   end
 
   describe '#decode' do
