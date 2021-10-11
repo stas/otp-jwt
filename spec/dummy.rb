@@ -32,6 +32,7 @@ ActiveRecord::Schema.define do
     t.string :otp_secret
     t.integer :otp_counter
     t.timestamp :last_login_at
+    t.timestamp :expire_jwt_at
     t.timestamps
   end
 end

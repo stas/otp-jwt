@@ -17,6 +17,7 @@ module OTP
             val = payload[claim_name]
             pk_col = self.column_for_attribute(self.primary_key)
 
+
             # Arel casts the values to the primary key type,
             # which means that an UUID becomes an integer by default...
             if self.connection.respond_to?(:lookup_cast_type_from_column)
@@ -28,7 +29,7 @@ module OTP
 
             return if casted_val.to_s != val.to_s.strip
 
-            self.find_by(self.primary_key => val)
+            self.find_by(self.primary_key => val).expire_jwt?
           end
         end
       end
@@ -43,6 +44,22 @@ module OTP
           **(claims || {})
         )
       end
+
+      # Reset the [JWT] token if it is set to expire
+      #
+      # This method allows you to expire any token, independently from
+      # the JWT flags/payload.
+      #
+      # @return nil if the expiration worked, otherwise returns the model
+      # rubocop:disable Rails/SkipsModelValidations
+      def expire_jwt?
+        return self unless self.respond_to?(:expire_jwt_at)
+        return self unless expire_jwt_at? && expire_jwt_at.past?
+
+        update_columns(expire_jwt_at: nil)
+        nil
+      end
+      # rubocop:enable Rails/SkipsModelValidations
     end
   end
 end

@@ -23,11 +23,12 @@ module OTP::JWT::FactoryHelpers
   # Creates an user
   #
   # @return [User]
-  def create_user
+  def create_user(attrs = {})
     User.create!(
       full_name: FFaker::Name.name,
       email: FFaker::Internet.email,
-      phone_number: FFaker::PhoneNumber.phone_number
+      phone_number: FFaker::PhoneNumber.phone_number,
+      **attrs
     )
   end
 end

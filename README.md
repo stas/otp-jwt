@@ -105,6 +105,7 @@ one time passwords:
 This concern expects two attributes to be provided by the model, the:
  * `otp_secret`: of type string, used to store the OTP signature key
  * `otp_counter`: of type integer, used to store the OTP counter
+ * `expire_jwt_at`: of type datetime, **optional** and used to force a token to expire
 
 A migration to add these two looks like this:
 ```
@@ -117,6 +118,13 @@ User.all.each do |u|
   u.save()
 end
 ```
+
+##### Force a token to expire
+
+If there's an `expire_jwt_at` value that is in the past, the user token will
+be reset and it will require a new authentication to receive a working token.
+
+This is handy if the user access needs to be scheduled and/or removed.
 #### Mailer support
 
 You can use the built-in mailer to deliver the OTP, just require it and

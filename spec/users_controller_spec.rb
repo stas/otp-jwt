@@ -13,6 +13,24 @@ RSpec.describe UsersController, type: :request do
     let(:user) { create_user }
 
     it { expect(response).to have_http_status(:ok) }
+
+    context 'with the expiration for JWT in future' do
+      let(:user) { create_user(expire_jwt_at: DateTime.tomorrow) }
+
+      it do
+        expect(response).to have_http_status(:ok)
+        expect(user.reload.expire_jwt_at).not_to be_nil
+      end
+    end
+
+    context 'with the expiration past for JWT' do
+      let(:user) { create_user(expire_jwt_at: DateTime.yesterday) }
+
+      it do
+        expect(response).to have_http_status(:unauthorized)
+        expect(user.reload.expire_jwt_at).to be_nil
+      end
+    end
   end
 
   context 'with bad subject' do
