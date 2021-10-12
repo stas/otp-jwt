@@ -29,7 +29,7 @@ module OTP
 
             return if casted_val.to_s != val.to_s.strip
 
-            self.find_by(self.primary_key => val).expire_jwt?
+            self.find_by(self.primary_key => val)&.expire_jwt?
           end
         end
       end
