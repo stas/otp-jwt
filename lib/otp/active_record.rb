@@ -41,7 +41,7 @@ module OTP
       transaction do
         otp_status = hotp.verify(otp.to_s, otp_counter)
         increment!(:otp_counter)
-        otp_status
+        !otp_status.nil?
       end
     end
 
