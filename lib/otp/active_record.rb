@@ -32,7 +32,7 @@ module OTP
 
     # Verifies the OTP
     #
-    # @return true on success, false on failure
+    # @return otp_counter on success, nil on failure
     def verify_otp(otp)
       return nil if !valid? || !persisted? || otp_secret.blank?
 
