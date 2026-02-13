@@ -20,7 +20,8 @@ module OTP
 
             # Arel casts the values to the primary key type,
             # which means that an UUID becomes an integer by default...
-            casted_val = pk_type.serialize(val)
+            pk_type = self.type_for_attribute(self.primary_key)
+            casted_val = pk_type.cast(val)
 
             return if casted_val.to_s != val.to_s.strip
 
