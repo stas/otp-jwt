@@ -24,7 +24,7 @@ jobs:
     - run: |
         sudo apt-get update
         sudo apt-get install libsqlite3-dev
-        bundle && rake
+        rm -rf Gemfile.lock && bundle && rake
 
       env:
         RAILS_VERSION: ~> ${{ matrix.rails }}

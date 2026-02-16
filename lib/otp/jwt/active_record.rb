@@ -15,7 +15,6 @@ module OTP
         def from_jwt(token, claim_name = 'sub')
           OTP::JWT::Token.decode(token) do |payload|
             val = payload[claim_name]
-            pk_col = self.column_for_attribute(self.primary_key)
 
 
             # Arel casts the values to the primary key type,
@@ -49,7 +48,7 @@ module OTP
       # @return nil if the expiration worked, otherwise returns the model
       def expire_jwt?
         return self unless self.respond_to?(:expire_jwt_at)
-        return self unless expire_jwt_at? && expire_jwt_at.past?
+        self unless expire_jwt_at? && expire_jwt_at.past?
       end
     end
   end
