@@ -21,6 +21,10 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
 
+    - name: Change permissions on pre-isntalled Ruby
+      if: matrix.ruby == '4.0'
+      run: sudo chmod +t $(ruby -e 'puts Gem.default_dir')/gems
+
     - run: |
         sudo apt-get update
         sudo apt-get install libsqlite3-dev

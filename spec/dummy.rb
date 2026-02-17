@@ -4,7 +4,7 @@ require 'global_id/railtie'
 require 'otp/mailer'
 
 class Dummy < Rails::Application
-  secrets.secret_key_base = '_'
+  config.secret_key_base = '_'
 
   config.hosts << 'www.example.com' if config.respond_to?(:hosts)
 

@@ -1,6 +1,8 @@
 require 'rotp'
+require 'active_support'
 require 'active_support/concern'
 require 'active_support/configurable'
+require 'active_support/deprecation'
 
 module OTP
   # [ActiveRecord] concern.
