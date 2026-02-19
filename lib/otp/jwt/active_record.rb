@@ -15,17 +15,12 @@ module OTP
         def from_jwt(token, claim_name = 'sub')
           OTP::JWT::Token.decode(token) do |payload|
             val = payload[claim_name]
-            pk_col = self.column_for_attribute(self.primary_key)
 
 
             # Arel casts the values to the primary key type,
             # which means that an UUID becomes an integer by default...
-            if self.connection.respond_to?(:lookup_cast_type_from_column)
-              pk_type = self.connection.lookup_cast_type_from_column(pk_col)
-              casted_val = pk_type.serialize(val)
-            else
-              casted_val = self.connection.type_cast(val, pk_col)
-            end
+            pk_type = self.type_for_attribute(self.primary_key)
+            casted_val = pk_type.cast(val)
 
             return if casted_val.to_s != val.to_s.strip
 
@@ -53,7 +48,7 @@ module OTP
       # @return nil if the expiration worked, otherwise returns the model
       def expire_jwt?
         return self unless self.respond_to?(:expire_jwt_at)
-        return self unless expire_jwt_at? && expire_jwt_at.past?
+        self unless expire_jwt_at? && expire_jwt_at.past?
       end
     end
   end

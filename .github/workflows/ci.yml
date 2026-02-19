@@ -8,17 +8,11 @@ jobs:
 
     strategy:
       matrix:
-        ruby: [2.4, 2.7, 3.0]
-        rails: [4, 5, 6]
+        ruby: [3.1, 3.2, 3.3, 4.0]
+        rails: [7, 8]
         exclude:
-          - ruby: 2.4
-            rails: 6
-          - ruby: 2.7
-            rails: 4
-          - ruby: 3
-            rails: 4
-          - ruby: 3
-            rails: 5
+          - ruby: 3.1
+            rails: 8
 
     steps:
     - uses: actions/checkout@master
@@ -26,16 +20,15 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-        bundler: none
+
+    - name: Change permissions on pre-isntalled Ruby
+      if: matrix.ruby == '4.0'
+      run: sudo chmod +t $(ruby -e 'puts Gem.default_dir')/gems
 
     - run: |
         sudo apt-get update
         sudo apt-get install libsqlite3-dev
-        echo $RAILS_VERSION | grep -q '4' && export SQLITE3_VERSION='~> 1.3.6'
-        echo $RAILS_VERSION | grep -q '4' && export BUNDLER_VERSION=1
-        echo $RAILS_VERSION | grep -q '4' && export RUBOCOP_VERSION='0.81'
-        gem install bundler -v "~> $BUNDLER_VERSION"
         rm -rf Gemfile.lock && bundle && rake
+
       env:
         RAILS_VERSION: ~> ${{ matrix.rails }}
-        BUNDLER_VERSION: 2
