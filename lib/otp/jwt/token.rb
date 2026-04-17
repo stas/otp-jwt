@@ -1,18 +1,56 @@
 require 'jwt'
-require 'active_support/configurable'
 
 module OTP
   module JWT
     # A configurable set of token helpers to sign/verify an entity JWT token.
     module Token
-      include ActiveSupport::Configurable
+      # The signature key used to sign the tokens
+      #
+      # @return [String], signature key
+      def self.jwt_signature_key
+        @jwt_signature_key
+      end
 
-      # The signature key used to sign the tokens.
-      config_accessor :jwt_signature_key, instance_accessor: false
-      # The signature key algorithm, defaults to HS256.
-      config_accessor(:jwt_algorithm, instance_accessor: false) { 'HS256' }
-      # The lifetime of the token, defaults to 1 day.
-      config_accessor(:jwt_lifetime, instance_accessor: false) { 60 * 60 * 24 }
+      # Set the signature key used to sign the tokens
+      #
+      # @param value [String], signature key
+      #
+      # @return [String], signature key
+      def self.jwt_signature_key=(value)
+        @jwt_signature_key = value
+      end
+
+      # The signature key algorithm, defaults to HS256
+      #
+      # @return [String], signature key algorithm
+      def self.jwt_algorithm
+        @jwt_algorithm ||= 'HS256'
+      end
+
+      # Set the signature key algorithm
+      #
+      # @param value [String], signature key algorithm
+      #
+      # @return [String], signature key algorithm
+      def self.jwt_algorithm=(value)
+        @jwt_algorithm = value
+      end
+
+      # The lifetime of the token, defaults to 1 day
+      #
+      # @return [Integer], token expiry in seconds
+      def self.jwt_lifetime
+        @jwt_lifetime ||= 60 * 60 * 24
+      end
+
+      # Set the lifetime of the token
+      #
+      # @param value [Integer], token expiry in seconds
+      #
+      # @return [Integer], token expiry in seconds
+      def self.jwt_lifetime=(value)
+        @jwt_lifetime = value
+      end
 
       # Generates a token based on a payload and optional overwritable claims
       #

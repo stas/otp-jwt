@@ -1,13 +1,11 @@
 require 'rotp'
 require 'active_support'
 require 'active_support/concern'
-require 'active_support/configurable'
 require 'active_support/deprecation'
 
 module OTP
   # [ActiveRecord] concern.
   module ActiveRecord
-    include ActiveSupport::Configurable
     extend ActiveSupport::Concern
 
     # Length of the generated OTP, defaults to 4.
